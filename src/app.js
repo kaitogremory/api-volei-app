@@ -11,4 +11,7 @@ app.use('/jogadores', jogadoresRoutes);
 const usuariosRoutes = require('./routes/usuarios');
 app.use('/usuarios', usuariosRoutes);
 
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
+
 module.exports = app;

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
+const autenticar = require('../middleware/auth');
 
 // GET /usuarios/inserir-teste
-router.get('/inserir-teste', async (req, res) => {
+router.get('/inserir-teste', autenticar, checkRole('admin', 'jogador'), async (req, res) => {
   try {
     const novo = await Usuario.create({
       nome: 'Caio Teste',
@@ -16,7 +17,7 @@ router.get('/inserir-teste', async (req, res) => {
 });
 
 // GET /usuarios
-router.get('/', async (req, res) => {
+router.get('/', autenticar, checkRole('admin', 'jogador'), async (req, res) => {
   try {
     const usuarios = await Usuario.find();
     res.json(usuarios);

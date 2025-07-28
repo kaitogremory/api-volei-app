@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const Jogador = require('../models/Jogador');
+const autenticar = require('../middleware/auth');
 
 // GET /jogadores
-router.get('/', async (req, res) => {
+router.get('/', autenticar, async (req, res) => {
   const jogadores = await Jogador.find();
   res.json(jogadores);
 });
 
 // POST /jogadores
-router.post('/', async (req, res) => {
+router.post('/', autenticar, async (req, res) => {
   try {
     const novoJogador = await Jogador.create(req.body);
     res.status(201).json(novoJogador);
