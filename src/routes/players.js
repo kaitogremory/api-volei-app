@@ -4,7 +4,7 @@ const Player = require('../models/Player');
 
 router.post('/', async (req, res) => {
   try {
-    const newPlayer = await Player.create({ name: req.body.name });
+    const newPlayer = await Player.create(req.body);
     res.status(201).json(newPlayer);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -23,9 +23,12 @@ router.get('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const updated = await Player.findByIdAndUpdate(
-      req.params.id,
-      { name: req.body.name },
-      { new: true }
+    req.params.id,
+    {
+      name: req.body.name,
+      isMonthly: req.body.isMonthly
+    },
+    { new: true }
     );
 
     if (!updated) {

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const playerSchema = new mongoose.Schema({
-  name: { type: String, required: true }
+  name: { type: String, required: true },
+  isMonthly: { type: Boolean, default: false }
 }, { timestamps: true });
 
 // Create virtual "id" field
