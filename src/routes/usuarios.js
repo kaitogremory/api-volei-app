@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const autenticar = require('../middleware/auth');
+const checkRole = require('../middleware/role');
 
 // GET /usuarios/inserir-teste
 router.get('/inserir-teste', autenticar, checkRole('admin', 'jogador'), async (req, res) => {
