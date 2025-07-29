@@ -5,12 +5,10 @@ const playerSchema = new mongoose.Schema({
   isMonthly: { type: Boolean, default: false }
 }, { timestamps: true });
 
-// Create virtual "id" field
 playerSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-// Ensure virtual fields are serializable
 playerSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,

@@ -4,7 +4,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const jogadoresRoutes = require('./routes/players');
-app.use('/players', jogadoresRoutes);
+const playersRoutes = require('./routes/players');
+app.use('/players', playersRoutes);
+
+const sessionRoutes = require('./routes/sessions');
+app.use('/sessions', sessionRoutes);
+
 
 module.exports = app;
