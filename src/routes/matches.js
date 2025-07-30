@@ -40,4 +40,19 @@ router.post('/', async (req, res) => {
   }
 });
 
+// routes/matches.js
+router.get('/session/:sessionId', async (req, res) => {
+  try {
+    const matches = await Match.find({ session: req.params.sessionId })
+      .populate('teamA.players')
+      .populate('teamB.players')
+      .sort({ createdAt: 1 }); 
+
+    res.json(matches);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;
