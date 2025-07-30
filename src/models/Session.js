@@ -1,30 +1,11 @@
 const mongoose = require('mongoose');
 
-const sessionSchema = new mongoose.Schema({
-  date: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-  players: [{ 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Player' 
-  }],
-  playersGone: [{ 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Player' 
-  }],
-  teams: [{ 
-    name: String, 
-    players: [{ 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Player' 
-    }]
-  }],
-  closed: {
-    type: Boolean,
-    default: false,
-  }
+const sessionSchema = new mongoose.Schema({  
+  date: { type: Date, required: true, default: Date.now },
+  closed: { type: Boolean, default: false },
+  players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }],
+  playersGone: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }],
+  teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],  
 }, { timestamps: true });
 
 sessionSchema.virtual('id').get(function () {

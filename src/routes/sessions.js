@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Session = require('../models/Session');
+const Team = require('..cle/models/Team');
 
 // GET all sessions
 router.get('/', async (req, res) => {
@@ -20,14 +21,22 @@ router.get('/', async (req, res) => {
 router.get('/active', async (req, res) => {
   try {
     const session = await Session.findOne({ closed: false })
-        .populate('players')
-        .populate('playersGone')
-        .populate('teams');
+      .populate('players')
+      .populate('playersGone')
+      .populate({
+        path: 'teams',
+        populate: {
+          path: 'players',
+          model: 'Player'
+        }
+      });
+
     res.json(session);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // POST create session
 router.post('/', async (req, res) => {
