@@ -10,5 +10,7 @@ app.use('/players', playersRoutes);
 const sessionRoutes = require('./routes/sessions');
 app.use('/sessions', sessionRoutes);
 
+const matchRoutes = require('./routes/matches');
+app.use('/api/matches', matchRoutes);
 
 module.exports = app;
