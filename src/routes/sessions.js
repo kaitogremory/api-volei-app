@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Session = require('../models/Session');
-const Team = require('..cle/models/Team');
+const Team = require('../models/Team');
 
 // GET all sessions
 router.get('/', async (req, res) => {
@@ -64,7 +64,7 @@ router.put('/:id/close', async (req, res) => {
   }
 });
 
-// PUT update playersGone
+// PUT update 
 router.put('/:id', async (req, res) => {
   try {    
     const session = await Session.findByIdAndUpdate(
@@ -105,11 +105,28 @@ router.put('/:id/teams', async (req, res) => {
   try {
     const { teams } = req.body;
 
+    // Cria os times no banco
+    const createdTeams = await Promise.all(
+      teams.map(team => {
+        return new Team({
+          name: team.name,
+          players: team.players
+        }).save();
+      })
+    );
+
+    // Atualiza a sessão com os IDs dos times criados
     const session = await Session.findByIdAndUpdate(
       req.params.id,
-      { teams },
+      { teams: createdTeams.map(t => t._id) },
       { new: true }
-    ).populate('teams.players');
+    ).populate({
+      path: 'teams',
+      populate: {
+        path: 'players',
+        model: 'Player'
+      }
+    });
 
     if (!session) return res.status(404).json({ error: 'Session not found' });
 
@@ -118,5 +135,6 @@ router.put('/:id/teams', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;
